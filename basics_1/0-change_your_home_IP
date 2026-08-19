@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Configure localhost and facebook.com to resolve to specific IP addresses
-sed -i 's/^127\.0\.0\.1[[:space:]]\+localhost/127.0.0.2\tlocalhost/' /etc/hosts
-sed -i '/[[:space:]]facebook\.com$/d' /etc/hosts
-echo -e "8.8.8.8\tfacebook.com" >> /etc/hosts
+awk '!/^[[:space:]]*127\.0\.0\.1[[:space:]]+localhost([[:space:]]|$)/ && !/[[:space:]]facebook\.com([[:space:]]|$)/' /etc/hosts > /tmp/hosts
+echo -e "127.0.0.2\tlocalhost" >> /tmp/hosts
+echo -e "8.8.8.8\tfacebook.com" >> /tmp/hosts
+cat /tmp/hosts > /etc/hosts
+rm -f /tmp/hosts
